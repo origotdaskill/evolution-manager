@@ -1,21 +1,15 @@
 # Use the official Node.js 20 image as a base
 FROM node:20-slim
 
-# Set the working directory in the container
+# Set the working directory
 WORKDIR /usr/src/app
 
-# Copy ALL application files first.
-COPY . .
+# Install vite globally, as in the original file
+RUN npm install -g vite
 
-# Install project dependencies
-RUN npm install
+# Expose the correct port the manager runs on
+EXPOSE 9615
 
-# Build the application
-RUN npm run build
-
-# Expose the port the app runs on
-EXPOSE 3000
-
-# --- FIX ---
-# The command to start the app, pointing to the correct entry file.
-CMD ["node", "build/index.js"]
+# Use npx to download and run the latest version of the manager.
+# This command starts the server on the correct port.
+ENTRYPOINT ["npx", "evolution-manager", "server", "start", "--port=9615"]
