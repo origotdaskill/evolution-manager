@@ -1,12 +1,23 @@
-# Use a imagem oficial do Node.js 20 como base
+# Use the official Node.js 20 image as a base
 FROM node:20-slim
 
+# Set the working directory in the container
 WORKDIR /usr/src/app
 
-RUN npm install -g vite
+# Copy package.json and package-lock.json
+COPY package*.json ./
 
-RUN ln -s /usr/local/bin/node /usr/bin/node
+# Install project dependencies
+RUN npm install
 
-ENTRYPOINT ["npx", "evolution-manager", "server", "start"] 
+# Copy the rest of the application code
+COPY . .
 
-EXPOSE 9615
+# Build the application
+RUN npm run build
+
+# Expose the port the app runs on
+EXPOSE 3000
+
+# The command to start the app
+CMD ["node", "build"]
