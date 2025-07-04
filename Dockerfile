@@ -4,11 +4,10 @@ FROM node:20-slim
 # Set the working directory in the container
 WORKDIR /usr/src/app
 
-# --- FIX ---
 # Copy ALL application files first.
 COPY . .
 
-# Install project dependencies (this will also run the prepare script)
+# Install project dependencies
 RUN npm install
 
 # Build the application
@@ -17,5 +16,6 @@ RUN npm run build
 # Expose the port the app runs on
 EXPOSE 3000
 
-# The command to start the app
-CMD ["node", "build"]
+# --- FIX ---
+# The command to start the app, pointing to the correct entry file.
+CMD ["node", "build/index.js"]
