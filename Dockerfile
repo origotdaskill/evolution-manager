@@ -4,14 +4,12 @@ FROM node:20-slim
 # Set the working directory in the container
 WORKDIR /usr/src/app
 
-# Copy package.json and package-lock.json
-COPY package*.json ./
-
-# Install project dependencies
-RUN npm install
-
-# Copy the rest of the application code
+# --- FIX ---
+# Copy ALL application files first.
 COPY . .
+
+# Install project dependencies (this will also run the prepare script)
+RUN npm install
 
 # Build the application
 RUN npm run build
